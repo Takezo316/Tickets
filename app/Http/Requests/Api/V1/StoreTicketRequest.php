@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Permissions\V1\Abilities;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class StoreTicketRequest extends FormRequest
+class StoreTicketRequest extends BaseTicketRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,22 +23,32 @@ class StoreTicketRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = Auth::user();
+
+        $authorIdAtt = $this->routeIs('tickets.store') ? 'data.relationships.author.data.id' : 'author';
+
+        $authorRule = 'required|integer|exists:users,id';
+
         $rules = [
             'data.attributes.title' => 'required|string',
             'data.attributes.description' => 'required|string',
-            'data.attributes.status' => 'required|string|in:A,C,H,X'
+            'data.attributes.status' => 'required|string|in:A,C,H,X',
+            $authorIdAtt => $authorRule.'|size:'.$user->id
         ];
 
-        if($this->routeIs('tickets.store')){
-            $rules['data.relationships.author.data.id'] = 'required|integer';
+        if($user->tokenCan(Abilities::CreateTicket)){
+            $rules[$authorIdAtt] .= '|'.$authorRule;
         }
 
         return $rules;
     }
 
-    public function messages(){
-        return [
-            'data.attributes.status' => 'The Status is Invalid. Please Please use A,C,H or X'
-        ];
+    protected function prepareForValidation(){
+        if($this->routeIs('authors.tickets.store')){
+            $this->merge([
+                'author' => $this->route('author')
+            ]);
+        }
     }
+
 }

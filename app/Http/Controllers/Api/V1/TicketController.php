@@ -4,30 +4,29 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Ticket;
 use App\Http\Requests\Api\V1\StoreTicketRequest;
+use App\Http\Requests\Api\V1\ReplaceTicketRequest;
 use App\Http\Requests\Api\V1\UpdateTicketRequest;
 use App\Http\Resources\v1\TicketResource;
 use App\Http\Filters\V1\TicketFilter;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\User;
+use App\Policies\V1\TicketPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
 
 use function Laravel\Prompts\error;
 
 class TicketController extends ApiController
 {
+    protected $policyClass = TicketPolicy::class;
     /**
-     * Display a listing of the resource.
+     * Get all tickets
+     *
+     * @group Managing Tickets
+     * @queryParam sort string Data field(s) to srot by. Separate multiple  with commas. Denote descending sort with a minus. Example: sort=title,-createdAt
      */
     public function index(TicketFilter $filters)
     {
         return TicketResource::collection(Ticket::filter($filters)->paginate());
-
-        /*Old method
-        if($this->include('author')){
-            return TicketResource::collection(Ticket::with('user')->paginate());
-        }
-
-        return TicketResource::collection(Ticket::paginate());*/
-
     }
 
     /**
@@ -35,23 +34,12 @@ class TicketController extends ApiController
      */
     public function store(StoreTicketRequest $request)
     {
-        try{
-            $user = User::findOrFail($request->input('data.relationships.author.data.id'));
-        }catch(ModelNotFoundException){
-            return $this->ok('User not found',[
-                    'error' => 'The provided user ID does not exists'
-                ]
-            );
+        //policy
+        if($this->isAble('store', Ticket::class)){
+            return new TicketResource(Ticket::create($request->mappedAttributes()));
         }
 
-        $model = [
-            'title' => $request->input('data.attributes.title'),
-            'description' => $request->input('data.attributes.description'),
-            'status' => $request->input('data.attributes.status'),
-            'user_id' => $request->input('data.relationships.author.data.id'),
-        ];
-
-        return new TicketResource(Ticket::create($model));
+        return $this->notAuthorized('You cannot create');
     }
 
     /**
@@ -59,47 +47,56 @@ class TicketController extends ApiController
      */
     public function show($ticket_id)
     {
-        try{
-            $ticket = Ticket::findOrFail($ticket_id);
+        $ticket = Ticket::findOrFail($ticket_id);
 
-            if($this->include('author')){
-                return new TicketResource($ticket->load('user'));
-            }
-
-            return new TicketResource($ticket);
-        }catch(ModelNotFoundException){
-            return $this->error('Ticket not found', 404);
+        if($this->include('author')){
+            return new TicketResource($ticket->load('user'));
         }
+
+        return new TicketResource($ticket);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Ticket $ticket)
-    {
-        //
-    }
-
-    /**
+     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        //
+        //PATCH
+        //policy
+        if($this->isAble('update', $ticket)){
+            $ticket->update($request->mappedAttributes());
+
+            return new TicketResource($ticket);
+        }
+
+        return $this->notAuthorized('You cannot update');
+    }
+
+    public function replace(ReplaceTicketRequest $request, Ticket $ticket)
+    {
+        //PUT
+        //policy
+        if($this->isAble('replace', $ticket)){
+            $ticket->update($request->mappedAttributes());
+
+            return new TicketResource($ticket);
+        }
+
+        return $this->notAuthorized('You cannot replace');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($ticket_id)
+    public function destroy(Ticket $ticket)
     {
-        try{
-            $ticket = Ticket::findOrFail($ticket_id);
+        //policy
+        if($this->isAble('delete', $ticket)){
             $ticket->delete();
 
             return $this->ok('Ticket deleted');
-        }catch(ModelNotFoundException){
-            return $this->error('Ticket not found', 404);
         }
+        return $this->notAuthorized('You cannot Delete');
+
     }
 }

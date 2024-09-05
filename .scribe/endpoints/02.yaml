@@ -1,0 +1,58 @@
+name: 'Managing Tickets'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/V1/tickets
+    metadata:
+      groupName: 'Managing Tickets'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get all tickets'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      sort:
+        name: sort
+        description: 'Data field(s) to srot by. Separate multiple  with commas. Denote descending sort with a minus.'
+        required: false
+        example: 'sort=title,-createdAt'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanQueryParameters:
+      sort: 'sort=title,-createdAt'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"type":"ticket","id":111,"attibutes":{"title":"New 1 REplaced","status":"A","createdAt":"2024-08-30T23:07:06.000000Z","updatedAt":"2024-08-30T23:07:06.000000Z"},"relationships":{"author":{"data":{"type":"user","id":1},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/1"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/111"}},{"type":"ticket","id":110,"attibutes":{"title":"New 1 REplaced","status":"A","createdAt":"2024-08-30T23:06:49.000000Z","updatedAt":"2024-08-30T23:06:49.000000Z"},"relationships":{"author":{"data":{"type":"user","id":1},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/1"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/110"}},{"type":"ticket","id":109,"attibutes":{"title":"Fourth Title REplaced","status":"A","createdAt":"2024-08-30T23:00:20.000000Z","updatedAt":"2024-08-30T23:00:20.000000Z"},"relationships":{"author":{"data":{"type":"user","id":1},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/1"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/109"}},{"type":"ticket","id":108,"attibutes":{"title":"Fourth Title REplaced","status":"A","createdAt":"2024-08-30T22:56:54.000000Z","updatedAt":"2024-08-30T22:56:54.000000Z"},"relationships":{"author":{"data":{"type":"user","id":1},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/1"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/108"}},{"type":"ticket","id":107,"attibutes":{"title":"New Ticket Title","status":"A","createdAt":"2024-08-29T18:36:57.000000Z","updatedAt":"2024-08-29T18:36:57.000000Z"},"relationships":{"author":{"data":{"type":"user","id":1},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/1"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/107"}},{"type":"ticket","id":106,"attibutes":{"title":"New Ticket Title","status":"A","createdAt":"2024-08-29T18:35:31.000000Z","updatedAt":"2024-08-29T18:35:31.000000Z"},"relationships":{"author":{"data":{"type":"user","id":2},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/2"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/106"}},{"type":"ticket","id":105,"attibutes":{"title":"New Ticket Title","status":"A","createdAt":"2024-08-29T18:33:40.000000Z","updatedAt":"2024-08-29T18:33:40.000000Z"},"relationships":{"author":{"data":{"type":"user","id":2},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/2"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/105"}},{"type":"ticket","id":97,"attibutes":{"title":"sit quia officiis","status":"A","createdAt":"2024-08-28T21:10:43.000000Z","updatedAt":"2024-08-28T21:10:43.000000Z"},"relationships":{"author":{"data":{"type":"user","id":6},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/6"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/97"}},{"type":"ticket","id":98,"attibutes":{"title":"sequi debitis nobis","status":"A","createdAt":"2024-08-28T21:10:43.000000Z","updatedAt":"2024-08-28T21:10:43.000000Z"},"relationships":{"author":{"data":{"type":"user","id":8},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/8"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/98"}},{"type":"ticket","id":99,"attibutes":{"title":"sed sunt qui","status":"H","createdAt":"2024-08-28T21:10:43.000000Z","updatedAt":"2024-08-28T21:10:43.000000Z"},"relationships":{"author":{"data":{"type":"user","id":2},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/2"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/99"}},{"type":"ticket","id":100,"attibutes":{"title":"molestiae quasi repellendus","status":"C","createdAt":"2024-08-28T21:10:43.000000Z","updatedAt":"2024-08-28T21:10:43.000000Z"},"relationships":{"author":{"data":{"type":"user","id":5},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/5"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/100"}},{"type":"ticket","id":92,"attibutes":{"title":"optio possimus dolor","status":"A","createdAt":"2024-08-28T21:10:42.000000Z","updatedAt":"2024-08-28T21:10:42.000000Z"},"relationships":{"author":{"data":{"type":"user","id":7},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/7"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/92"}},{"type":"ticket","id":93,"attibutes":{"title":"eum voluptatum corporis","status":"A","createdAt":"2024-08-28T21:10:42.000000Z","updatedAt":"2024-08-28T21:10:42.000000Z"},"relationships":{"author":{"data":{"type":"user","id":7},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/7"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/93"}},{"type":"ticket","id":94,"attibutes":{"title":"dolor sapiente assumenda","status":"C","createdAt":"2024-08-28T21:10:42.000000Z","updatedAt":"2024-08-28T21:10:42.000000Z"},"relationships":{"author":{"data":{"type":"user","id":1},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/1"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/94"}},{"type":"ticket","id":95,"attibutes":{"title":"pariatur et inventore","status":"H","createdAt":"2024-08-28T21:10:42.000000Z","updatedAt":"2024-08-28T21:10:42.000000Z"},"relationships":{"author":{"data":{"type":"user","id":4},"links":{"self":"http:\/\/localhost\/api\/V1\/authors\/4"}}},"links":{"self":"http:\/\/localhost\/api\/V1\/tickets\/95"}}],"links":{"first":"http:\/\/localhost\/api\/V1\/tickets?page=1","last":"http:\/\/localhost\/api\/V1\/tickets?page=7","prev":null,"next":"http:\/\/localhost\/api\/V1\/tickets?page=2"},"meta":{"current_page":1,"from":1,"last_page":7,"links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=1","label":"1","active":true},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=2","label":"2","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=3","label":"3","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=4","label":"4","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=5","label":"5","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=6","label":"6","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=7","label":"7","active":false},{"url":"http:\/\/localhost\/api\/V1\/tickets?page=2","label":"Next &raquo;","active":false}],"path":"http:\/\/localhost\/api\/V1\/tickets","per_page":15,"to":15,"total":103}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '58'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 7|tZtIcgGcMlAY5eIIM5Ut6UjADsYmctqjNZWYIR2f9405fcca'
+    controller: null
+    method: null
+    route: null
+    custom: []

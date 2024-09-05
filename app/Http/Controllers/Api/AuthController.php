@@ -8,10 +8,27 @@ use App\Models\User;
 use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Permissions\V1\Abilities;
 
 class AuthController extends Controller
 {
     use ApiResponses;
+
+    /**
+     * Login
+     *
+     * Authenticas the user and returns API token.
+     *
+     * @unauthenticated
+     * @group Authentication
+     * @response 200 {
+    "data": {
+        "token": "{BEARER_TOKEN}"
+    },
+    "message": "Authenticated",
+    "statusCode": 200
+    }
+     */
 
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
@@ -27,12 +44,21 @@ class AuthController extends Controller
             [
                 'token' => $user->createToken(
                     'API Token for'. $user->email,
-                    ['*'],
+                    Abilities::getAbilities($user),
                     now()->addMonth()
                 )->plainTextToken
             ]
         );
     }
+
+    /**
+     * Sign Out
+     *
+     * Signs out the current user.
+     *
+     * @group Authentication
+     * @response 200 {}
+     */
 
     public function logout(Request $request){
         //$request->user()->tokens()->delete(); //Revoke all tokens

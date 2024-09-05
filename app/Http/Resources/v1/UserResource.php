@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'attributes' => [
                 'name' => $this->name,
                 'email' => $this->email,
+                'isManager' => $this->is_manager,
                 //Form 1
                 /*'emailVerifiedAt' => $this->when(
                     $request->routeIs('users.*'),
@@ -34,7 +35,7 @@ class UserResource extends JsonResource
             ],
             'includes' => TicketResource::collection($this->whenLoaded('tickets')),
             'links' => [
-                'self' => route('authors.show', [$this->id])
+                'self' => route('users.show', [$this->id])
             ]
         ];
     }
